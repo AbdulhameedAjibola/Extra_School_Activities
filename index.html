@@ -60,7 +60,7 @@
             <h2>{{checkout}}</h2>
             <div class="cart-items">
                 <div class="cart-item" v-for="lessonID in cartSet" :key="lessonID">
-                    <!-- Find the lesson corresponding to the itemID in the cart -->
+                    
                     <div v-if="lesson = lessons.find(lesson => lesson.id === lessonID)">
                         <div class="cart-item-image">
                             <img v-bind:src="lesson.image" class="lesson-image" alt="lesson image">
