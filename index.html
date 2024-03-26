@@ -79,7 +79,11 @@
                 </div>
             </div>
            <div class="checkout-details">
-            
+            <div class="details-input">
+                <input type="text" name="" id="" v-model="customerName">
+                <input type="number" name="" id="" v-model="customerNumber">
+            </div>
+            <button v-on:click="checkOut()">Proceed To Checkout</button>
            </div>
         </div>
     </div>
@@ -100,16 +104,16 @@
                 sortByAvailability: false,
                 ascending: false,
                 descending: false,
-                searchTerm: ''
+                searchTerm: '',
+                customerName: '',
+                customerNumber: ''
 
             },
             methods: {
                 canAddToCart(lesson){
                     return lesson.availability > this.cartCount(lesson.id);
                 },
-                // isCartEmpty(){
-                //     return ;
-                // },
+                
                 cartCount(id){
                     let count = 0;
                     for (let i=0; i<this.cart.length; i++){
@@ -153,6 +157,7 @@
                     }
                     else return a-b;
                 }
+                
             },
             computed:{
                 cartItemCount(){
