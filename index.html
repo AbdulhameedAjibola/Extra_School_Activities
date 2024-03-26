@@ -60,7 +60,7 @@
             <h2>{{checkout}}</h2>
             <div class="cart-items">
                 <div class="cart-item" v-for="lessonID in cartSet" :key="lessonID">
-                    
+                    <!-- Find the lesson corresponding to the itemID in the cart -->
                     <div v-if="lesson = lessons.find(lesson => lesson.id === lessonID)">
                         <div class="cart-item-image">
                             <img v-bind:src="lesson.image" class="lesson-image" alt="lesson image">
@@ -93,7 +93,14 @@
                 lessons: lessons,
                 showLessons: true,
                 cart: [],
-                
+                sortedLessons: [...lessons],
+                sortByPrice: false,
+                sortBySubject: false,
+                sortByLocation: false,
+                sortByAvailability: false,
+                ascending: false,
+                descending: false,
+                searchTerm: ''
 
             },
             methods: {
@@ -116,21 +123,76 @@
                     
                     this.cart.push(lesson.id);
                 },
-                
+                removeFromCart(lesson){
+                    this.cart.pop(lesson.id);
+                },
                 showCheckout() {
                     this.showLessons = !this.showLessons;
                 },
-                
-                
+                sortLessons(){
+                    this.sortedLessons = [...this.lessons];
+                    if (this.sortBySubject) {
+                        this.sortedLessons.sort((a,b) => this.sortFunction(a.subject, b.subject));
+                    }
+                    if (this.sortByPrice) {
+                        this.sortedLessons.sort((a,b) => this.sortFunction(a.price, b.price));
+                    }
+                    if (this.sortByLocation){
+                        this.sortedLessons.sort((a,b) => this.sortFunction(a.location, b.location));
+                    }
+                    if (this.sortByAvailability) {
+                        this.sortedLessons.sort((a,b) => this.sortFunction(a.availability, b.availability))
+                    }
+                    if(this.descending){
+                        this.sortedLessons.reverse();
+                    }
+                },
+                sortFunction(a,b){
+                    if (typeof a ==='string' && typeof b === 'string') {
+                        return a.localeCompare(b);
+                    }
+                    else return a-b;
+                }
             },
             computed:{
                 cartItemCount(){
                     return this.cart.length || "";
                 },
-                
-               
+                cartSet(){
+                    return new Set(this.cart)
+                },
+                searchLessons(){
+                    return this.sortedLessons.filter((lesson) => {
+                        return lesson.subject.toLowerCase().includes(this.searchTerm.toLowerCase()) 
+                    })
+                }
             },
-           
+            watch:{
+                sortBySubject(){
+                    this.sortLessons();
+                },
+                sortByPrice(){
+                    this.sortLessons();
+                },
+                sortByLocation(){
+                    this.sortLessons();
+                },
+                sortByAvailability(){
+                    this.sortLessons();
+                },
+                ascending(){
+                    if (this.ascending) {
+                        this.descending = false;
+                        this.sortLessons();
+                    }
+                },
+                descending(){
+                    if (this.descending) {
+                        this.ascending = false;
+                        this.sortLessons();
+                    }
+                }
+            }
         })
     </script>
 </body>
