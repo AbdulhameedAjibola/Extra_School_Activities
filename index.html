@@ -5,15 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <script src="lessons.js"></script>
+    <link rel="stylesheet" href="styles.css">
     <title>Hameed's Extra Classes</title>
 </head>
 <body>
     <div id="app">
         <div class="header">
             <h1>{{header}}</h1>
-            
-            <button v-on:click="showCheckout" v-if="cartItemCount >= 1">View Cart ({{cartItemCount}})</button>
-            <button v-else disabled>View Cart ({{cartItemCount}})</button>
+            <div>
+                <button class="show-checkout" v-on:click="showCheckout" v-if="cartItemCount >= 1">View Cart ({{cartItemCount}})</button>
+                <button class="show-checkout" v-else disabled>View Cart ({{cartItemCount}})</button>
+            </div>
         </div>
         
        
