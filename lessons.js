@@ -45,5 +45,49 @@ let lessons = [
         "description": "This course is for students who wish to improve their biology understanding!!. Stand out anongst your peers!",
         "availability": 10
     },
-    
+    {
+        "id": 1006,
+        "image": "images/pet2.jpg",
+        "subject": "CST 3145",
+        "price": 450.00,
+        "location": "Computer Science Building (CSB) Room 370",
+        "description": "Come to expand your knowledge on Vue.js",
+        "availability": 10
+    },
+    {
+        "id": 1007,
+        "image": "images/pet2.jpg",
+        "subject": "FST 221",
+        "price": 36.00,
+        "location": "Home Economics Lab",
+        "description": "This session is for people with little to no cooking skills to learn basic cooking eitquettes",
+        "availability": 10
+    },
+    {
+        "id": 1008,
+        "image": "images/pet2.jpg",
+        "subject": "GSC 314",
+        "price": 30.00,
+        "location": "Physics Lab",
+        "description": "This is make up classes for the Geography lectures",
+        "availability": 10
+    },
+    {
+        "id": 1009,
+        "image": "images/pet2.jpg",
+        "subject": "Badminton 101",
+        "price": 50.00,
+        "location": "Badminton Court, Sports Center",
+        "description": "Come for the basic tutoring on how to play badminton",
+        "availability": 10
+    },
+    {
+        "id": 1010,
+        "image": "images/pet2.jpg",
+        "subject": "Rap 101",
+        "price": 14.99,
+        "location": "Music Lab",
+        "description": "This is for all Music Fanatics, come for tutoring  in Rap music.",
+        "availability": 10
+    }
 ]
