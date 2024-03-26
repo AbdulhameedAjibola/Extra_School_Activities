@@ -81,9 +81,11 @@
            <div class="checkout-details">
             <div class="details-input">
                 <input type="text" name="" id="" v-model="customerName">
+                <span class="error-handler" v-if="!isValidText">Please enter Alhabets only</span>
                 <input type="number" name="" id="" v-model="customerNumber">
+                <span class="error-handler" v-if="!isValidNumber">Please enter Valid number</span>
             </div>
-            <button v-on:click="checkOut()">Proceed To Checkout</button>
+            <button v-if="showCheckoutButton" v-on:click="checkOut">Proceed To Checkout</button>
            </div>
         </div>
     </div>
@@ -132,6 +134,9 @@
                 },
                 showCheckout() {
                     this.showLessons = !this.showLessons;
+                },
+                showCheckoutButton(){
+                    return this.isValidNumber && this.isValidText
                 },
                 sortLessons(){
                     this.sortedLessons = [...this.lessons];
