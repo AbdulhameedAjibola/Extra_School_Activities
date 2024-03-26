@@ -80,12 +80,15 @@
             </div>
            <div class="checkout-details">
             <div class="details-input">
-                <input type="text" name="" id="" v-model="customerName">
-                <span class="error-handler" v-if="!isValidText">Please enter Alhabets only</span>
-                <input type="number" name="" id="" v-model="customerNumber">
-                <span class="error-handler" v-if="!isValidNumber">Please enter Valid number</span>
+                <label for="Name">Customer Name</label> <br>
+                <input type="text" name="" id="" v-model="customerName"> <br>
+                <span class="error-handler" v-if="isValidText">Please enter your name (Alphabets Only)</span><br>
+                <label for="Number">Phone Number</label> <br>
+                <input type="number" name="" id="" v-model="customerNumber"> <br>
+                <span class="error-handler" v-if="!isValidNumber()">Please enter your Phone Digits only</span>
             </div>
-            <button v-if="showCheckoutButton" v-on:click="checkOut">Proceed To Checkout</button>
+            <button v-if="showCheckoutButton()" v-on:click="checkOut">Proceed To Checkout</button>
+            <button disabled v-else>Proceed to Checkout</button>
            </div>
         </div>
     </div>
@@ -136,7 +139,16 @@
                     this.showLessons = !this.showLessons;
                 },
                 showCheckoutButton(){
-                    return this.isValidNumber && this.isValidText
+                    return this.isValidNumber() && this.isValidText()
+                },
+                isValidNumber() {
+                    return /^[1-9]\d*$/.test(this.customerNumber);
+                },
+                isValidText() {
+                    return /^[a-zA-Z]+$/.test(this.customerName);
+                },
+                checkOut(){
+                    alert("Order Placed");
                 },
                 sortLessons(){
                     this.sortedLessons = [...this.lessons];
@@ -176,12 +188,7 @@
                         return lesson.subject.toLowerCase().includes(this.searchTerm.toLowerCase()) 
                     })
                 },
-                isValidNumber() {
-                    return /^[1-9]\d*$/.test(this.customerNumber);
-                },
-                isValidText() {
-                    return /^[a-zA-Z]+$/.test(this.customerName);
-                }
+                
             },
             watch:{
                 sortBySubject(){
