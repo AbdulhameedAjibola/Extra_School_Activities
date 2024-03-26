@@ -157,7 +157,7 @@
                     }
                     else return a-b;
                 }
-                
+
             },
             computed:{
                 cartItemCount(){
@@ -170,6 +170,12 @@
                     return this.sortedLessons.filter((lesson) => {
                         return lesson.subject.toLowerCase().includes(this.searchTerm.toLowerCase()) 
                     })
+                },
+                isValidNumber() {
+                    return /^[1-9]\d*$/.test(this.customerNumber);
+                },
+                isValidText() {
+                    return /^[a-zA-Z]+$/.test(this.customerName);
                 }
             },
             watch:{
