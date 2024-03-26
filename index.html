@@ -82,10 +82,10 @@
             <div class="details-input">
                 <label for="Name">Customer Name</label> <br>
                 <input type="text" name="" id="" v-model="customerName"> <br>
-                <span class="error-handler" v-if="isValidText">Please enter your name (Alphabets Only)</span><br>
+                <span class="error-handler" v-if="!isValidText()">Please enter your name (Alphabets Only) and not more than 15 characters.</span><br>
                 <label for="Number">Phone Number</label> <br>
                 <input type="number" name="" id="" v-model="customerNumber"> <br>
-                <span class="error-handler" v-if="!isValidNumber()">Please enter your Phone Digits only</span>
+                <span class="error-handler" v-if="!isValidNumber()">Please enter your complete Phone Number (Digits Only)</span>
             </div>
             <button v-if="showCheckoutButton()" v-on:click="checkOut">Proceed To Checkout</button>
             <button disabled v-else>Proceed to Checkout</button>
@@ -142,13 +142,19 @@
                     return this.isValidNumber() && this.isValidText()
                 },
                 isValidNumber() {
-                    return /^[1-9]\d*$/.test(this.customerNumber);
+                    return /^[1-9]\d*$/.test(this.customerNumber) && this.customerNumber.length === 11;
+                    
                 },
                 isValidText() {
-                    return /^[a-zA-Z]+$/.test(this.customerName);
+                    return /^[a-zA-Z]+$/.test(this.customerName) && (this.customerName.length >= 3 && this.customerName.length <= 12) ;
+                    
                 },
                 checkOut(){
                     alert("Order Placed");
+                    this.showLessons = !this.showLessons;
+                    this.cart = [];
+                    this.customerName=''
+                    this.customerNumber='';
                 },
                 sortLessons(){
                     this.sortedLessons = [...this.lessons];
