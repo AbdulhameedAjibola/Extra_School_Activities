@@ -4,28 +4,83 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
-    <link href="https://cdn.jsdelivr.net/gh/eliyantosarage/font-awesome-pro@main/fontawesome-pro-6.5.1-web/css/all.min.css" rel="stylesheet">
+    <script src="lessons.js"></script>
     <title>Hameed's Extra Classes</title>
 </head>
 <body>
     <div id="app">
-        <h1>{{header}}</h1>
-        <div class="showProducts">
+        <div class="header">
+            <h1>{{header}}</h1>
+            
+            <button v-on:click="showCheckout" v-if="cartItemCount >= 1">View Cart ({{cartItemCount}})</button>
+            <button v-else disabled>View Cart ({{cartItemCount}})</button>
+        </div>
+        
+       
+        <div class="show-lesson" v-if="showLessons">
             <div class="search">
-                
-            </div>
-            <section class="main">
+                <input type="text" placeholder="Search Lessons" class="search-bar" v-model="searchTerm">   
+                <button class="search-button">Search</button> 
+           </div>
+           <section class="main">
                 <div class="sort">
-
+                    <input type="checkbox" name="By Subject" id="" v-model="sortBySubject">By Subject
+                    <input type="checkbox" name="By Location" id="" v-model="sortByLocation">By Location
+                    <input type="checkbox" name="By Price" id="" v-model="sortByPrice">By Price
+                    <input type="checkbox" name="By Availability" id="" v-model="sortByAvailability">By Availability
+                    <input type="checkbox" name="ascending" id="" v-model="ascending"> Ascending Order
+                    <input type="checkbox" name="descending" id="" v-model="descending"> descending Order
                 </div>
-                <div class="products">
-    
+                <div class="lessons" v-for="lesson in searchLessons">
+                    <div class="image-holder">
+                        <img v-bind:src="lesson.image" class="lesson-image" alt="lesson image">
+                    </div>
+                    <div class="lesson-description">
+                        <h2>{{lesson.subject}}</h2>
+                        <p>{{lesson.description}}</p>
+                        <p>{{lesson.location}}</p>
+                        <div class="price-stock">
+                            <span>{{lesson.price}}</span>
+                            <span>Available Stock: {{lesson.availability - cartCount(lesson.id)}}</span>
+                        </div>
+                        <button v-on:click="addToCart(lesson)" :disabled="!canAddToCart(lesson)">Add to Cart</button>
+                        <div class="message">
+                            <span v-if="lesson.availability === cartCount(lesson.id)">Lesson Out of Stock</span>
+                            <span v-else-if="lesson.availability - cartCount(lesson.id)">
+                                Hurry now!. {{lesson.availability - cartCount(lesson.id)}} Spaces Left!
+                            </span>
+                            <span v-else>Seats Available! Buy Now!</span>
+                        </div>
+                    </div>
                 </div>
             </section>
            
         </div>
-        <div class="showCheckout">
-
+        <div class="showCheckout" v-else>
+            <h2>{{checkout}}</h2>
+            <div class="cart-items">
+                <div class="cart-item" v-for="lessonID in cartSet" :key="lessonID">
+                    <!-- Find the lesson corresponding to the itemID in the cart -->
+                    <div v-if="lesson = lessons.find(lesson => lesson.id === lessonID)">
+                        <div class="cart-item-image">
+                            <img v-bind:src="lesson.image" class="lesson-image" alt="lesson image">
+                        </div>
+                        <div class="cart-item-description">
+                            <h2>{{lesson.subject}}</h2>
+                            <p>{{lesson.description}}</p>
+                            <p>{{lesson.location}}</p>
+                            <div class="price-stock">
+                                <span>{{lesson.price}}</span>
+                                <span>Available Stock: {{lesson.availability - cartCount(lesson.id)}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button v-on:click="removeFromCart(lessonID)">Remove from Cart</button>
+                </div>
+            </div>
+           <div class="checkout-details">
+            
+           </div>
         </div>
     </div>
 
@@ -33,11 +88,49 @@
         let app = new Vue({
             el: '#app',
             data:{
-                header: "Hameed's Extra Lessons's Site"
+                header: "Hameed's Extra lesson's Site",
+                checkout: "Checkout Page",
+                lessons: lessons,
+                showLessons: true,
+                cart: [],
+                
+
             },
             methods: {
-
-            }
+                canAddToCart(lesson){
+                    return lesson.availability > this.cartCount(lesson.id);
+                },
+                // isCartEmpty(){
+                //     return ;
+                // },
+                cartCount(id){
+                    let count = 0;
+                    for (let i=0; i<this.cart.length; i++){
+                        if (this.cart[i] === id) {
+                            count++;
+                        }
+                    }
+                    return count;
+                },
+                addToCart(lesson){
+                    
+                    this.cart.push(lesson.id);
+                },
+                
+                showCheckout() {
+                    this.showLessons = !this.showLessons;
+                },
+                
+                
+            },
+            computed:{
+                cartItemCount(){
+                    return this.cart.length || "";
+                },
+                
+               
+            },
+           
         })
     </script>
 </body>
