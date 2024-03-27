@@ -14,13 +14,13 @@
            <div class="logo">
             <h2>{{header}}</h2>
         </div>
-           <div class="nav-items">
+        <div class="nav-items">
             <div class="search">
                 <input type="text" placeholder="Search Lessons" class="search-bar" v-model="searchTerm">   
                 <button class="search-button">Search</button> 
            </div>
-           </div>
-           <div class="cart-buttons">
+        </div>
+        <div class="cart-buttons">
             <button class="show-checkout" v-on:click="showCheckout" v-if="cartItemCount >= 1">View Cart ({{cartItemCount}})</button>
             <button class="show-checkout" v-else disabled>View Cart ({{cartItemCount}})</button>
            </div>
@@ -28,38 +28,55 @@
         
        
         <div class="show-lesson" v-if="showLessons">
-           
-           
+            <section class="sort-section">
                 <div class="sort">
-                    <input type="checkbox" name="By Subject" id="" v-model="sortBySubject">By Subject
-                    <input type="checkbox" name="By Location" id="" v-model="sortByLocation">By Location
+                    <div class="criteria">
+                        <input type="checkbox" name="By Subject" id="" v-model="sortBySubject">By Subject
+                    </div>
+                    <div class="criteria">
+                        <input type="checkbox" name="By Location" id="" v-model="sortByLocation">By Location
+                    </div>
+                    <div class="criteria">
+                        
+                    </div>
                     <input type="checkbox" name="By Price" id="" v-model="sortByPrice">By Price
                     <input type="checkbox" name="By Availability" id="" v-model="sortByAvailability">By Availability
-                    <input type="checkbox" name="ascending" id="" v-model="ascending"> Ascending Order
+                    <div class="order">
+                        <input type="checkbox" name="ascending" id="" v-model="ascending"> Ascending Order
                     <input type="checkbox" name="descending" id="" v-model="descending"> descending Order
+                    </div>
+                    
                 </div>
+            </section>
+            
+            <section class="main">
                 <div class="lessons" v-for="lesson in searchLessons">
-                    <div class="image-holder">
-                        <img v-bind:src="lesson.image" class="lesson-image" alt="lesson image">
-                    </div>
-                    <div class="lesson-description">
-                        <h2>{{lesson.subject}}</h2>
-                        <p>{{lesson.description}}</p>
-                        <p>{{lesson.location}}</p>
-                        <div class="price-stock">
-                            <p> DHS {{lesson.price}}</p>
-                            <span>Available Stock: {{lesson.availability - cartCount(lesson.id)}}</span>
+                    <div class="lesson">
+                        <div class="image-holder">
+                            <img v-bind:src="lesson.image" class="lesson-image" alt="lesson image">
                         </div>
-                        <button v-on:click="addToCart(lesson)" :disabled="!canAddToCart(lesson)">Add to Cart</button>
-                        <div class="message">
-                            <span v-if="lesson.availability === cartCount(lesson.id)">Lesson Out of Stock</span>
-                            <span v-else-if="lesson.availability - cartCount(lesson.id)">
-                                Hurry now!. {{lesson.availability - cartCount(lesson.id)}} Spaces Left!
-                            </span>
-                            <span v-else>Seats Available! Buy Now!</span>
+                        <div class="lesson-description">
+                            <h2>{{lesson.subject}}</h2>
+                            <p>{{lesson.description}}</p>
+                            <p>{{lesson.location}}</p>
+                            <div class="price-stock">
+                                <p> DHS {{lesson.price}}</p>
+                                <span>Available Stock: {{lesson.availability - cartCount(lesson.id)}}</span>
+                            </div>
+                            <button v-on:click="addToCart(lesson)" :disabled="!canAddToCart(lesson)">Add to Cart</button>
+                            <div class="message">
+                                <span v-if="lesson.availability === cartCount(lesson.id)">Lesson Out of Stock</span>
+                                <span v-else-if="lesson.availability - cartCount(lesson.id)">
+                                        Hurry now!. {{lesson.availability - cartCount(lesson.id)}} Spaces Left!
+                                </span>
+                                <span v-else>Seats Available! Buy Now!</span>
+                            </div>
                         </div>
                     </div>
                 </div>
+           </section>
+           
+            
             
            
         </div>
