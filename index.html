@@ -10,21 +10,26 @@
 </head>
 <body>
     <div id="app">
-        <div class="header">
-            <h1>{{header}}</h1>
-            <div>
-                <button class="show-checkout" v-on:click="showCheckout" v-if="cartItemCount >= 1">View Cart ({{cartItemCount}})</button>
-                <button class="show-checkout" v-else disabled>View Cart ({{cartItemCount}})</button>
-            </div>
+        <div class="navbar">
+           <div class="logo">
+            <h2>{{header}}</h2>
         </div>
-        
-       
-        <div class="show-lesson" v-if="showLessons">
+           <div class="nav-items">
             <div class="search">
                 <input type="text" placeholder="Search Lessons" class="search-bar" v-model="searchTerm">   
                 <button class="search-button">Search</button> 
            </div>
-           <section class="main">
+           </div>
+           <div class="cart-buttons">
+            <button class="show-checkout" v-on:click="showCheckout" v-if="cartItemCount >= 1">View Cart ({{cartItemCount}})</button>
+            <button class="show-checkout" v-else disabled>View Cart ({{cartItemCount}})</button>
+           </div>
+        </div>
+        
+       
+        <div class="show-lesson" v-if="showLessons">
+           
+           
                 <div class="sort">
                     <input type="checkbox" name="By Subject" id="" v-model="sortBySubject">By Subject
                     <input type="checkbox" name="By Location" id="" v-model="sortByLocation">By Location
@@ -42,7 +47,7 @@
                         <p>{{lesson.description}}</p>
                         <p>{{lesson.location}}</p>
                         <div class="price-stock">
-                            <span>{{lesson.price}}</span>
+                            <p> DHS {{lesson.price}}</p>
                             <span>Available Stock: {{lesson.availability - cartCount(lesson.id)}}</span>
                         </div>
                         <button v-on:click="addToCart(lesson)" :disabled="!canAddToCart(lesson)">Add to Cart</button>
@@ -55,7 +60,7 @@
                         </div>
                     </div>
                 </div>
-            </section>
+            
            
         </div>
         <div class="showCheckout" v-else>
@@ -72,7 +77,7 @@
                             <p>{{lesson.description}}</p>
                             <p>{{lesson.location}}</p>
                             <div class="price-stock">
-                                <span>{{lesson.price}}</span>
+                                <p> DHS {{lesson.price}}</p>
                                 <span>Available Stock: {{lesson.availability - cartCount(lesson.id)}}</span>
                             </div>
                         </div>
@@ -134,8 +139,11 @@
                     
                     this.cart.push(lesson.id);
                 },
-                removeFromCart(lesson){
-                    this.cart.pop(lesson.id);
+                removeFromCart(lessonID){
+                    let index = this.cart.indexOf(lessonID);
+                    if (index !== -1) {
+                        this.cart.splice(index,1);
+                    }
                 },
                 showCheckout() {
                     this.showLessons = !this.showLessons;
