@@ -3,16 +3,21 @@
     margin: 0;
     padding: 0;
 }
-.header h1{
-    text-align: center;
-    font-size: 3em;
+.navbar
+{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 50px;
+    background-color: gray;
+    position: fixed;
+    z-index: -1;
+    width:  100%;
+    
 }
-.header div{
-    display: block;
+.search{
+    display: flex;
 }
-.show-checkout{
-    position: absolute;
-    right: 10;
-    color: greenyellow;
-    margin: 10px;
+.search-bar{
+    width: 350px;
 }
