@@ -11,7 +11,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Rubik:ital@0;1&display=swap" rel="stylesheet">
     <title>Hameed's Extra Classes</title>
 </head>
-<body>
+<body> 
     <div id="app">
         <div class="navbar">
            <div class="logo">
@@ -25,6 +25,7 @@
         </div>
         <div class="cart-buttons">
             <button class="show-checkout" v-on:click="showCheckout" v-if="cartItemCount >= 1">View Cart ({{cartItemCount}})</button>
+            <button class="show-checkout" v-else-if="isCartEmpty()">View Cart ({{cartItemCount}})</button>
             <button class="show-checkout" v-else disabled>View Cart ({{cartItemCount}})</button>
            </div>
         </div>
@@ -36,19 +37,19 @@
                     <h2>Apply Filters</h2>
                     
                     <div class="criteria">
-                        <input type="checkbox" name="By Subject" id="" v-model="sortBySubject">
+                        <input type="checkbox" name="By Subject" id="" v-model="sortButtons.sortBySubject" :disabled="disableButtons('sortBySubject')">
                         <span class="checkbox-text">By Subject</span> 
                     </div>
                     <div class="criteria">
-                        <input type="checkbox" name="By Location" id="" v-model="sortByLocation"> 
+                        <input type="checkbox" name="By Location" id="" v-model="sortButtons.sortByLocation" :disabled="disableButtons('sortByLocation')"> 
                         <span class="checkbox-text">By Location</span> 
                     </div>
                     <div class="criteria">
-                        <input type="checkbox" name="By Price" id="" v-model="sortByPrice">
+                        <input type="checkbox" name="By Price" id="" v-model="sortButtons.sortByPrice" :disabled="disableButtons('sortByPrice')">
                         <span class="checkbox-text"> By Price</span> 
                     </div>
                     <div class="criteria">
-                        <input type="checkbox" name="By Availability" id="" v-model="sortByAvailability">
+                        <input type="checkbox" name="By Availability" id="" v-model="sortButtons.sortByAvailability" :disabled="disableButtons('sortByAvailability')">
                         <span class="checkbox-text">By Availability</span> 
                     </div>
                     
@@ -98,13 +99,14 @@
            
         </div>
         <div class="showCheckout" v-else>
-            <h2>{{checkout}}</h2>
-            <div class="cart-items">
+            
+            <h2 class="title">{{checkout}}</h2>
+            <div class="cart-items" >
                 <div class="cart-item" v-for="lessonID in cartSet" :key="lessonID">
-                    <!-- Find the lesson corresponding to the itemID in the cart -->
-                    <div v-if="lesson = lessons.find(lesson => lesson.id === lessonID)">
-                        <div class="cart-item-image">
-                            <img v-bind:src="lesson.image" class="lesson-image" alt="lesson image">
+                    
+                    <div v-if="lesson = lessons.find(lesson => lesson.id === lessonID)" class="item-data">
+                        <div class="item-image">
+                            <img v-bind:src="lesson.image" class="cart-lesson-image" alt="lesson image">
                         </div>
                         <div class="cart-item-description">
                             <h2>{{lesson.subject}}</h2>
@@ -116,21 +118,25 @@
                             </div>
                         </div>
                     </div>
-                    <button v-on:click="removeFromCart(lessonID)">Remove from Cart</button>
+                    <div class="delete-from-cart">
+                        <button class="remove-from-cart" v-on:click="removeFromCart(lessonID)">Remove from Cart</button>
+                    </div>
+                    
                 </div>
             </div>
            <div class="checkout-details">
-            <div class="details-input">
-                <label for="Name">Customer Name</label> <br>
-                <input type="text" name="" id="" v-model="customerName"> <br>
-                <span class="message" v-if="!isValidText()">Please enter your name (Alphabets Only) and not more than 15 characters.</span><br>
-                <label for="Number">Phone Number</label> <br>
-                <input type="number" name="" id="" v-model="customerNumber"> <br>
-                <span class="message" v-if="!isValidNumber()">Please enter your complete Phone Number (Digits Only)</span>
+                <div class="details-input">
+                    <h2 class="order-title">Please enter Order Details</h2>
+                    <label for="Name">Customer Name</label> <br>
+                    <input type="text" name="" id="" v-model="customerName"> <br>
+                    <span class="message" v-if="!isValidText()">Please enter your name (Alphabets Only) and not more than 15 characters.</span><br>
+                    <label for="Number">Phone Number</label> <br>
+                    <input type="number" name="" id="" v-model="customerNumber"> <br>
+                    <span class="message" v-if="!isValidNumber()">Please enter your complete Phone Number (Digits Only)</span>
+                </div>
+                <button  v-if="showCheckoutButton()" v-on:click="checkOut" class="place-order">Buy Now!</button>
+                <button disabled v-else class="place-order">Buy Now!</button>
             </div>
-            <button v-if="showCheckoutButton()" v-on:click="checkOut">Proceed To Checkout</button>
-            <button disabled v-else>Proceed to Checkout</button>
-           </div>
         </div>
     </div>
 
@@ -144,10 +150,12 @@
                 showLessons: true,
                 cart: [],
                 sortedLessons: [...lessons],
-                sortByPrice: false,
+                sortButtons: {
+                    sortByPrice: false,
                 sortBySubject: false,
                 sortByLocation: false,
                 sortByAvailability: false,
+                },
                 ascending: false,
                 descending: false,
                 searchTerm: '',
@@ -160,7 +168,7 @@
                     return lesson.availability > this.cartCount(lesson.id);
                 },
                 
-                cartCount(id){
+               cartCount(id){
                     let count = 0;
                     for (let i=0; i<this.cart.length; i++){
                         if (this.cart[i] === id) {
@@ -180,6 +188,7 @@
                     }
                 },
                 showCheckout() {
+                    
                     this.showLessons = !this.showLessons;
                 },
                 showCheckoutButton(){
@@ -192,6 +201,11 @@
                 isValidText() {
                     return /^[a-zA-Z]+$/.test(this.customerName) && (this.customerName.length >= 3 && this.customerName.length <= 12) ;
                     
+                },
+                isCartEmpty(){
+                    if (this.showCheckout && this.cart.length <= 0) {
+                        this.showLessons = true;
+                    }
                 },
                 checkOut(){
                     alert("Order Placed");
@@ -223,7 +237,17 @@
                         return a.localeCompare(b);
                     }
                     else return a-b;
-                }
+                },
+                disableButtons(currentButton){
+                    for (const button in this.sortButtons)
+                    {
+                        if (button !== currentButton && this.sortButtons[button]) {
+                        return true; // Disable button if any other button is enabled
+                        }
+                    }
+                return false; // Enable button if no other button is enabled
+            }
+            
 
             },
             computed:{
@@ -238,6 +262,7 @@
                         return lesson.subject.toLowerCase().includes(this.searchTerm.toLowerCase()) 
                     })
                 },
+                
                 
             },
             watch:{
