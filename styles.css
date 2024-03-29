@@ -159,6 +159,102 @@ body{
     font-size: small;
     color: red;
 }
+.showCheckout{
+    margin: 40px;
+}
+.title{
+    text-align: center;
+    font-style: italic;
+    font-size: 2.5em;
+}
+.cart-items{
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+.cart-item{
+    display: flex;
+    border: 3px solid black;
+    border-radius: 8px;
+    justify-content: space-between;
+    padding: 15px;
+}
+.item-data{
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+
+}
+.cart-lesson-image{
+    height: 180px;
+    width: 180px;
+    border-radius: 8px;
+}
+.cart-item-description{
+    vertical-align: middle;
+    margin-top: 20px;
+}
+.cart-item-description h2{
+    margin-bottom: 10px;
+    color: wheat;
+    font-size: 2em;
+    font-weight: 700;
+}
+.remove-from-cart{
+    background-color: red;
+    padding: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 18px;
+    font-weight: 700;
+    color: wheat;
+    border: 1px solid black;
+    border-radius: 8px;
+    transition:opacity 0.3s ease;
+    cursor: pointer;
+    margin: 8px;
+    margin-top: 35%;
+}
+.remove-from-cart:active{
+    opacity: 0;
+}
+.checkout-details{
+    margin-top: 40px;
+}
+.details-input{
+    font-size: 20px;
+}
+.details-input h2{
+    text-align: center;
+    color: wheat;
+}
+.details-input input{
+    padding: 10px;
+    width: 300px;
+    margin: 8px;
+    margin-bottom: 0;
+}
+.place-order{
+    background-color: wheat;
+    padding: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 20px;
+    font-weight: 700;
+    color: grey;
+    border: 1px solid black;
+    border-radius: 8px;
+    transition: 0.5s;
+    cursor: pointer;
+    margin: 15px;
+}
+
+.place-order:hover{
+    transform: scale(1.1);
+}
+
+
 
 
 
